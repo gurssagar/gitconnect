@@ -1,0 +1,113 @@
+#!/usr/bin/env node
+
+import { Command } from 'commander';
+import chalk from 'chalk';
+import { initCommand } from './commands/init';
+import { accountCommand } from './commands/account';
+import { projectCommand } from './commands/project';
+import { pushCommand } from './commands/push';
+import { useCommand } from './commands/use';
+import { statusCommand } from './commands/status';
+import { ConfigManager } from './core/config';
+
+const program = new Command();
+
+program
+  .name('gitconnect')
+  .description('Multi-GitHub Account Manager - Auto & Explicit Mode')
+  .version('1.0.0');
+
+// Initialize
+program
+  .command('init')
+  .description('Initialize GitConnect configuration')
+  .action(initCommand);
+
+// Account management
+const account = program
+  .command('account')
+  .description('Manage GitHub accounts');
+
+account
+  .command('add')
+  .description('Add a new GitHub account')
+  .action(() => accountCommand('add'));
+
+account
+  .command('list')
+  .description('List all accounts')
+  .action(() => accountCommand('list'));
+
+account
+  .command('remove <name>')
+  .description('Remove an account')
+  .action((name) => accountCommand('remove', name));
+
+// Project management
+const project = program
+  .command('project')
+  .description('Manage project settings');
+
+project
+  .command('set')
+  .description('Set account for current project')
+  .action(() => projectCommand('set'));
+
+project
+  .command('mode <mode>')
+  .description('Set project mode (auto/prompt)')
+  .action((mode) => projectCommand('mode', mode));
+
+project
+  .command('info')
+  .description('Show current project info')
+  .action(() => projectCommand('info'));
+
+// Push with explicit control
+program
+  .command('push')
+  .description('Push with GitConnect (explicit mode)')
+  .option('-a, --account <name>', 'Use specific account')
+  .option('--auto', 'Use auto mode (non-interactive)')
+  .action(pushCommand);
+
+// Use account for session
+program
+  .command('use <account>')
+  .description('Use account for this shell session')
+  .action(useCommand);
+
+// Status
+program
+  .command('status')
+  .description('Show GitConnect status')
+  .action(statusCommand);
+
+// Hook installation
+program
+  .command('install-hook')
+  .description('Install git push hook')
+  .action(async () => {
+    const config = new ConfigManager();
+    await config.installGitHook();
+    console.log(chalk.green('✅ Git hook installed'));
+    console.log(chalk.gray('All git push commands will now use GitConnect'));
+  });
+
+program
+  .command('uninstall-hook')
+  .description('Uninstall git push hook')
+  .action(async () => {
+    const config = new ConfigManager();
+    await config.uninstallGitHook();
+    console.log(chalk.yellow('⚠️  Git hook removed'));
+    console.log(chalk.gray('Normal git push behavior restored'));
+  });
+
+// Parse arguments
+program.parse();
+
+// Show help if no command
+if (!process.argv.slice(2).length) {
+  program.outputHelp();
+}
