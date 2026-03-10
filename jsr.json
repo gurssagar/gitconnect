@@ -1,10 +1,8 @@
 {
   "name": "@gurssagar/gitconnect",
   "version": "1.0.0",
-  "exports": {
-    ".": "./dist/index.js",
-    "./cli": "./dist/cli.js"
-  },
+  "license": "MIT",
+  "exports": "./dist/cli.js",
   "publish": {
     "include": [
       "dist/",
