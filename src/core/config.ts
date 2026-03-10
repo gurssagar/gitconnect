@@ -1,6 +1,7 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as os from 'os';
+import { execSync } from 'child_process';
 import { Account, ProjectConfig, GitConnectConfig } from '../types';
 
 export class ConfigManager {
@@ -117,7 +118,6 @@ fi
 `;
 
     // Install as git alias
-    const { execSync } = require('child_process');
     try {
       execSync('git config --global alias.push "!gitconnect push"');
     } catch (e) {
@@ -126,7 +126,6 @@ fi
   }
 
   async uninstallGitHook(): Promise<void> {
-    const { execSync } = require('child_process');
     try {
       execSync('git config --global --unset alias.push');
     } catch (e) {

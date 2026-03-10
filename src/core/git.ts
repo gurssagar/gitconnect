@@ -30,7 +30,7 @@ export class GitManager {
       return {
         isGitRepo: true,
         remoteUrl: originRemote?.refs?.fetch,
-        currentBranch: status.current,
+        currentBranch: status.current || undefined,
         projectPath: this.projectPath,
       };
     } catch (error) {
@@ -111,12 +111,12 @@ export class GitManager {
     }
   }
 
-  async detectGitHubOwner(): Promise<string | null> {
+  async detectGitHubOwner(): Promise<string | undefined> {
     try {
       const remotes = await this.git.getRemotes(true);
       const origin = remotes.find(r => r.name === 'origin');
       
-      if (!origin?.refs?.fetch) return null;
+      if (!origin?.refs?.fetch) return undefined;
       
       // Parse GitHub URL
       const url = origin.refs.fetch;
@@ -124,18 +124,18 @@ export class GitManager {
       // Handle HTTPS: https://github.com/owner/repo.git
       if (url.includes('github.com')) {
         const match = url.match(/github\.com[:/]([^/]+)/);
-        return match?.[1] || null;
+        return match?.[1] || undefined;
       }
       
       // Handle SSH: git@github.com:owner/repo.git
       if (url.includes('git@github.com')) {
         const match = url.match(/:([^/]+)/);
-        return match?.[1] || null;
+        return match?.[1] || undefined;
       }
       
-      return null;
+      return undefined;
     } catch {
-      return null;
+      return undefined;
     }
   }
 
