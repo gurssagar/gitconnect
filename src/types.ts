@@ -8,12 +8,12 @@ export interface Account {
 
 export interface ProjectConfig {
   account: string;
-  mode: 'auto' | 'prompt';
+  mode: 'auto' | 'prompt' | 'off';
   addedAt: string;
 }
 
 export interface GitConnectConfig {
-  defaultMode: 'auto' | 'prompt';
+  defaultMode: 'auto' | 'prompt' | 'off';
   version?: string;
 }
 

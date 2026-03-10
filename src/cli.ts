@@ -8,12 +8,16 @@ import { projectCommand } from './commands/project';
 import { pushCommand } from './commands/push';
 import { useCommand } from './commands/use';
 import { statusCommand } from './commands/status';
+import { commitCommand } from './commands/commit';
+import { hooksCommand } from './commands/hooks';
+import { preCommitHook, prePushHook } from './commands/hook';
 import { ConfigManager } from './core/config';
 
 const program = new Command();
 
 program
   .name('gitconnect')
+  .alias('gc')
   .description('Multi-GitHub Account Manager - Auto & Explicit Mode')
   .version('1.0.0');
 
@@ -63,6 +67,16 @@ project
   .description('Show current project info')
   .action(() => projectCommand('info'));
 
+// Commit with account selection
+program
+  .command('commit')
+  .description('Commit with GitConnect (prompts for account)')
+  .option('-m, --message <message>', 'Commit message')
+  .option('--amend', 'Amend previous commit')
+  .option('-s, --sign', 'Sign commit with SSH key')
+  .option('-a, --account <name>', 'Use specific account')
+  .action(commitCommand);
+
 // Push with explicit control
 program
   .command('push')
@@ -83,10 +97,48 @@ program
   .description('Show GitConnect status')
   .action(statusCommand);
 
-// Hook installation
+// Hook management
+const hooks = program
+  .command('hooks')
+  .description('Manage git hooks');
+
+hooks
+  .command('install')
+  .description('Install git hooks')
+  .option('-t, --type <type>', 'Hook type: commit, push, or all', 'commit')
+  .action((options) => hooksCommand('install', options));
+
+hooks
+  .command('uninstall')
+  .description('Uninstall git hooks')
+  .option('-t, --type <type>', 'Hook type: commit, push, or all', 'all')
+  .action((options) => hooksCommand('uninstall', options));
+
+hooks
+  .command('status')
+  .description('Show hook status')
+  .action(() => hooksCommand('status', {}));
+
+hooks
+  .command('mode [mode]')
+  .description('Set hook mode (prompt/auto/off)')
+  .action((mode) => hooksCommand('mode', { mode }));
+
+// Internal hook handlers (called by git hooks)
+program
+  .command('hook-pre-commit')
+  .description('Internal: Pre-commit hook handler')
+  .action(preCommitHook);
+
+program
+  .command('hook-pre-push')
+  .description('Internal: Pre-push hook handler')
+  .action(prePushHook);
+
+// Legacy hook installation (backward compatibility)
 program
   .command('install-hook')
-  .description('Install git push hook')
+  .description('Install git push hook (legacy)')
   .action(async () => {
     const config = new ConfigManager();
     await config.installGitHook();
@@ -96,7 +148,7 @@ program
 
 program
   .command('uninstall-hook')
-  .description('Uninstall git push hook')
+  .description('Uninstall git push hook (legacy)')
   .action(async () => {
     const config = new ConfigManager();
     await config.uninstallGitHook();
