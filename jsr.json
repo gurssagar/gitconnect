@@ -1,0 +1,25 @@
+{
+  "name": "@gurssagar/gitconnect",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./dist/index.js",
+    "./cli": "./dist/cli.js"
+  },
+  "publish": {
+    "include": [
+      "dist/",
+      "README.md",
+      "LICENSE",
+      "package.json"
+    ],
+    "exclude": [
+      "node_modules/",
+      "tests/",
+      "docs/",
+      "src/",
+      "*.test.ts",
+      "jest.config.js",
+      "tsconfig.json"
+    ]
+  }
+}

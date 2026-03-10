@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Multi-GitHub Account Manager - Auto & Explicit Mode",
   "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./cli": "./dist/cli.js"
+  },
   "bin": {
     "gitconnect": "./dist/cli.js",
     "gc": "./dist/cli.js"
