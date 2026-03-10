@@ -1,11 +1,8 @@
-name: Publish to JSR
-
+name: Publish
 on:
   push:
     branches:
       - main
-    tags:
-      - 'v*'
 
 jobs:
   publish:
@@ -14,19 +11,6 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Publish to JSR
-        run: npx jsr@latest publish --allow-slow-types
+      - uses: actions/checkout@v6
+      - name: Publish package
+        run: npx jsr publish
