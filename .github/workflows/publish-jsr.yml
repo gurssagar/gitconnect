@@ -12,5 +12,10 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run build
       - name: Publish package
         run: npx jsr publish
