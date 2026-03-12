@@ -4,7 +4,7 @@
 
 **GitConnect** is a Multi-GitHub Account Manager CLI tool that enables developers to manage multiple GitHub accounts with per-project account selection, automatic git identity switching, and commit signing.
 
-### Current Version: 1.1.0
+### Current Version: 1.2.0
 
 ---
 
@@ -309,5 +309,27 @@ GitConnect is now **Production Ready** ✅
 
 ---
 
+## 🔮 Future Roadmap (v1.3.0)
+
+### 1. AI Integration
+- [ ] AI-powered commit message suggestions
+- [ ] Intelligent branch name generation
+- [ ] Code review assistance
+- [ ] Automated PR descriptions
+
+### 2. Advanced Automation
+- [ ] Scheduled commit automation
+- [ ] Batch operations across accounts
+- [ ] Git hooks marketplace
+- [ ] Workflow automation rules
+
+### 3. Cloud Sync
+- [ ] Cloud backup for configurations
+- [ ] Cross-device sync
+- [ ] Team workspaces
+- [ ] Encrypted vault storage
+
+---
+
 *Last Updated: 2026-03-13*
-*Project Version: 1.1.0*
+*Project Version: 1.2.0*
