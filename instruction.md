@@ -108,7 +108,7 @@
 - [x] Create shell completion scripts
 - [ ] Add VS Code extension
 - [ ] Implement configuration migration
-- [ ] Add Windows CI testing
+- [x] Add Windows CI testing
 
 ---
 
