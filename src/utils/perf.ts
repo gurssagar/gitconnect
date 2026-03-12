@@ -17,7 +17,7 @@ export const perfManager = {
   /**
    * SSH connection pooling
    */
-  createConnectionPool(size: number = 5): void {
+  createConnectionPool(_size: number = 5): void {
     // Pool SSH connections
   },
 

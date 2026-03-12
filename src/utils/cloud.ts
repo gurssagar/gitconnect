@@ -3,7 +3,6 @@
  * Backup and sync configurations across devices
  */
 
-import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as os from 'os';
 
@@ -22,7 +21,7 @@ export const cloudSync = {
   /**
    * Restore from cloud backup
    */
-  async restore(backupId: string): Promise<boolean> {
+  async restore(_backupId: string): Promise<boolean> {
     // Would download and restore from cloud
     return true;
   },
@@ -44,7 +43,7 @@ export const cloudSync = {
   /**
    * Enable auto-sync
    */
-  enableAutoSync(intervalMinutes: number): void {
+  enableAutoSync(_intervalMinutes: number): void {
     // Set up periodic sync
   },
 

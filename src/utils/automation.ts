@@ -21,7 +21,7 @@ export const automationManager = {
     let added = 0;
     let failed = 0;
 
-    for (const account of accounts) {
+    for (const _account of accounts) {
       try {
         // Would call account add command
         added++;
@@ -36,7 +36,7 @@ export const automationManager = {
   /**
    * Create automation rule
    */
-  createRule(name: string, trigger: string, action: string): boolean {
+  createRule(_name: string, _trigger: string, _action: string): boolean {
     // Store rule for later execution
     return true;
   },
@@ -51,7 +51,7 @@ export const automationManager = {
   /**
    * Execute rule
    */
-  executeRule(name: string): boolean {
+  executeRule(_name: string): boolean {
     try {
       execSync('git status', { stdio: 'pipe' });
       return true;

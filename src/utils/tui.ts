@@ -17,11 +17,7 @@ export const tuiManager = {
    * Check if TUI dependencies are available
    */
   isAvailable(): boolean {
-    try {
-      require.resolve('blessed');
-      return true;
-    } catch {
-      return false;
-    }
+    // Stub - would check for blessed/ink
+    return false;
   },
 };

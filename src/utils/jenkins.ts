@@ -25,7 +25,7 @@ export const jenkinsPlugin = {
     stage('Configure Accounts') {
       steps {
         script {
-          ${accounts.map((a, i) => `// Configure account: ${a}`).join('\n          ')}
+          ${accounts.map((a, _i) => `// Configure account: ${a}`).join('\n          ')}
         }
       }
     }
