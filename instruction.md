@@ -284,7 +284,7 @@ GitConnect is now **Production Ready** ✅
 ### 2. Advanced Features
 - [ ] Interactive rebase with account switching
 - [ ] Merge conflict resolution helper
-- [ ] Stash management per account
+- [x] Stash management per account
 - [ ] Cherry-pick across accounts
 
 ### 3. UI/UX Improvements
@@ -301,7 +301,7 @@ GitConnect is now **Production Ready** ✅
 
 ### 5. Developer Experience
 - [x] Git alias management
-- [ ] Custom hook scripts per project
+- [x] Custom hook scripts per project
 - [x] Gitignore template management
 - [x] Worktree support
 
