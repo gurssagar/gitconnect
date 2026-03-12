@@ -6,7 +6,6 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as os from 'os';
 import { execSync } from 'child_process';
-import chalk from 'chalk';
 
 export interface SSHKeyInfo {
   path: string;
@@ -111,7 +110,7 @@ export class SSHManager {
       }
 
       return { valid: true };
-    } catch (error: any) {
+    } catch (_error: any) {
       return { valid: false, error: `Key not found: ${keyPath}` };
     }
   }

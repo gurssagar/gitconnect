@@ -79,7 +79,7 @@ export async function preCommitHook(): Promise<void> {
       }
 
       account = accounts.find(a => a.id === selectedAccount);
-    } catch (error) {
+    } catch (_error) {
       // Non-interactive mode or cancelled
       console.log(chalk.yellow('\nCommit cancelled'));
       process.exit(1);
@@ -101,7 +101,7 @@ export async function preCommitHook(): Promise<void> {
   // Set git identity
   try {
     await git.setIdentity(account.username, account.email);
-  } catch (error) {
+  } catch (_error) {
     console.error(chalk.red('Failed to set git identity'));
     process.exit(1);
   }

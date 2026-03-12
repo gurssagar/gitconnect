@@ -127,5 +127,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Support
 
-- Issues: [GitHub Issues](https://github.com/yourusername/gitconnect/issues)
-- Discussions: [GitHub Discussions](https://github.com/yourusername/gitconnect/discussions)
+- Issues: [GitHub Issues](https://github.com/gurssagar/gitconnect/issues)
+- Discussions: [GitHub Discussions](https://github.com/gurssagar/gitconnect/discussions)

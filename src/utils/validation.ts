@@ -2,8 +2,6 @@
  * Input validation utilities
  */
 
-import chalk from 'chalk';
-
 export interface ValidationResult {
   valid: boolean;
   error?: string;
@@ -76,14 +74,14 @@ export const validators = {
   },
 };
 
-export function validateOrThrow(validator: (input: string) => ValidationResult, input: string): void {
+export function validateOrThrow(validator: (_input: string) => ValidationResult, input: string): void {
   const result = validator(input);
   if (!result.valid) {
     throw new Error(result.error);
   }
 }
 
-export function promptValidator(validator: (input: string) => ValidationResult): (input: string) => boolean | string {
+export function promptValidator(validator: (_input: string) => ValidationResult): (_input: string) => boolean | string {
   return (input: string) => {
     const result = validator(input);
     return result.valid ? true : result.error || 'Invalid input';

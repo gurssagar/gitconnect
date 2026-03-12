@@ -108,19 +108,10 @@ export class ConfigManager {
   }
 
   async installGitHook(): Promise<void> {
-    const hookScript = `#!/bin/sh
-# GitConnect push hook
-if command -v gitconnect >/dev/null 2>&1; then
-  exec gitconnect push "$@"
-else
-  exec git push "$@"
-fi
-`;
-
     // Install as git alias
     try {
       execSync('git config --global alias.push "!gitconnect push"');
-    } catch (e) {
+    } catch (_e) {
       throw new Error('Failed to install git alias');
     }
   }
@@ -128,7 +119,7 @@ fi
   async uninstallGitHook(): Promise<void> {
     try {
       execSync('git config --global --unset alias.push');
-    } catch (e) {
+    } catch (_e) {
       // Alias might not exist
     }
   }

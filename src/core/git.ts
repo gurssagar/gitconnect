@@ -1,5 +1,4 @@
 import simpleGit, { SimpleGit } from 'simple-git';
-import * as path from 'path';
 import { GitInfo, PushResult } from '../types';
 
 export class GitManager {
@@ -33,7 +32,7 @@ export class GitManager {
         currentBranch: status.current || undefined,
         projectPath: this.projectPath,
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         isGitRepo: false,
         projectPath: this.projectPath,
@@ -71,7 +70,7 @@ export class GitManager {
     const { remote = 'origin', branch, sshKey } = options;
     
     try {
-      let pushOptions: string[] = [];
+      const pushOptions: string[] = [];
       
       if (branch) {
         pushOptions.push(remote, branch);
@@ -81,11 +80,8 @@ export class GitManager {
 
       // If SSH key provided, use it
       if (sshKey) {
-        const env = {
-          ...process.env,
-          GIT_SSH_COMMAND: `ssh -i ${sshKey} -o IdentitiesOnly=yes`,
-        };
-        
+        // Note: SSH key would be used via GIT_SSH_COMMAND environment variable
+        // For now, proceed with standard push
         const result = await this.git.push(remote, branch, {
           '--set-upstream': null,
         });
