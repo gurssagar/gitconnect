@@ -12,6 +12,13 @@ export interface SSHKeyInfo {
   publicKey: string;
   type: 'ed25519' | 'rsa' | 'ecdsa' | 'unknown';
   comment?: string;
+  inAgent?: boolean;
+}
+
+export interface AgentKeyInfo {
+  fingerprint: string;
+  type: string;
+  comment?: string;
 }
 
 export class SSHManager {
@@ -222,3 +229,92 @@ export class SSHManager {
 }
 
 export const sshManager = new SSHManager();
+
+/**
+ * SSH Agent integration functions
+ */
+export const sshAgent = {
+  /**
+   * Check if SSH agent is running
+   */
+  isRunning(): boolean {
+    try {
+      execSync('ssh-add -l', { stdio: 'pipe' });
+      return true;
+    } catch (error) {
+      const err = error as Error & { status?: number };
+      // Exit code 1 means agent running but no keys, 2 means agent not running
+      return err.status === 1;
+    }
+  },
+
+  /**
+   * List keys currently in SSH agent
+   */
+  listKeys(): AgentKeyInfo[] {
+    try {
+      const output = execSync('ssh-add -l', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+      return output.trim().split('\n').filter(Boolean).map(line => {
+        const parts = line.split(' ');
+        return {
+          fingerprint: parts[1] || '',
+          type: parts[0]?.replace(/[()]/g, '') || '',
+          comment: parts.slice(2).join(' ') || undefined,
+        };
+      });
+    } catch {
+      return [];
+    }
+  },
+
+  /**
+   * Add a key to SSH agent
+   */
+  addKey(keyPath: string, ttl?: number): boolean {
+    try {
+      const ttlFlag = ttl ? `-t ${ttl}` : '';
+      execSync(`ssh-add ${ttlFlag} "${keyPath}"`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Remove a key from SSH agent
+   */
+  removeKey(keyPath: string): boolean {
+    try {
+      execSync(`ssh-add -d "${keyPath}"`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Remove all keys from SSH agent
+   */
+  removeAllKeys(): boolean {
+    try {
+      execSync('ssh-add -D', { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Check if a specific key is in the agent
+   */
+  hasKey(keyPath: string): boolean {
+    try {
+      const output = execSync('ssh-add -l', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+      // Get fingerprint of the key file
+      const fingerprint = execSync(`ssh-keygen -lf "${keyPath}"`, { encoding: 'utf-8' }).split(' ')[1];
+      return output.includes(fingerprint);
+    } catch {
+      return false;
+    }
+  },
+};
