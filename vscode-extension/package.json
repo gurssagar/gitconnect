@@ -1,0 +1,63 @@
+{
+  "name": "gitconnect",
+  "displayName": "GitConnect",
+  "description": "Multi-GitHub Account Manager - Switch accounts easily",
+  "version": "1.0.0",
+  "publisher": "gitconnect",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "icon": "icon.png",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gitconnect.switchAccount",
+        "title": "GitConnect: Switch Account"
+      },
+      {
+        "command": "gitconnect.showStatus",
+        "title": "GitConnect: Show Status"
+      },
+      {
+        "command": "gitconnect.setProjectMode",
+        "title": "GitConnect: Set Project Mode"
+      }
+    ],
+    "configuration": {
+      "title": "GitConnect",
+      "properties": {
+        "gitconnect.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show GitConnect status bar item"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^18.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^6.x",
+    "@typescript-eslint/parser": "^6.x",
+    "eslint": "^8.x",
+    "typescript": "^5.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gurssagar/gitconnect"
+  },
+  "license": "MIT"
+}
