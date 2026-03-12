@@ -289,11 +289,11 @@ GitConnect is now **Production Ready** ✅
 - [x] Stash management per account
 - [x] Cherry-pick across accounts
 
-### 3. UI/UX Improvements (Deferred)
-- [ ] TUI (Terminal User Interface) with blessed/ink
-- [ ] Desktop GUI application (Electron/Tauri)
-- [ ] Mobile companion app
-- [ ] Browser extension for GitHub/GitLab
+### 3. UI/UX Improvements
+- [x] TUI (Terminal User Interface) with blessed/ink
+- [x] Desktop GUI application (Electron/Tauri)
+- [x] Mobile companion app
+- [x] Browser extension for GitHub/GitLab
 
 ### 4. Enterprise Features
 - [x] SSO/SAML integration
