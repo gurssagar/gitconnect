@@ -17,22 +17,22 @@ export async function accountCommand(action: string, name?: string): Promise<voi
   }
 
   switch (action) {
-    case 'add':
-      await addAccount(config);
-      break;
-    case 'list':
-      await listAccounts(config);
-      break;
-    case 'remove':
-      if (!name) {
-        console.error(chalk.red('Account name required for remove'));
-        process.exit(1);
-      }
-      await removeAccount(config, name);
-      break;
-    default:
-      console.error(chalk.red(`Unknown action: ${action}`));
+  case 'add':
+    await addAccount(config);
+    break;
+  case 'list':
+    await listAccounts(config);
+    break;
+  case 'remove':
+    if (!name) {
+      console.error(chalk.red('Account name required for remove'));
       process.exit(1);
+    }
+    await removeAccount(config, name);
+    break;
+  default:
+    console.error(chalk.red(`Unknown action: ${action}`));
+    process.exit(1);
   }
 }
 

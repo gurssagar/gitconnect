@@ -20,18 +20,18 @@ export async function projectCommand(action: string, mode?: string): Promise<voi
   }
 
   switch (action) {
-    case 'set':
-      await setProjectAccount(config, git, gitInfo.projectPath);
-      break;
-    case 'mode':
-      await setProjectMode(config, gitInfo.projectPath, mode);
-      break;
-    case 'info':
-      await showProjectInfo(config, git, gitInfo);
-      break;
-    default:
-      console.error(chalk.red(`Unknown action: ${action}`));
-      process.exit(1);
+  case 'set':
+    await setProjectAccount(config, git, gitInfo.projectPath);
+    break;
+  case 'mode':
+    await setProjectMode(config, gitInfo.projectPath, mode);
+    break;
+  case 'info':
+    await showProjectInfo(config, git, gitInfo);
+    break;
+  default:
+    console.error(chalk.red(`Unknown action: ${action}`));
+    process.exit(1);
   }
 }
 

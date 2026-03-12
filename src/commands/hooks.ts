@@ -53,22 +53,22 @@ export async function hooksCommand(action: string, options: HookOptions): Promis
   }
 
   switch (action) {
-    case 'install':
-      await installHooks(gitInfo.projectPath, options);
-      break;
-    case 'uninstall':
-      await uninstallHooks(gitInfo.projectPath, options);
-      break;
-    case 'status':
-      await showHookStatus(gitInfo.projectPath);
-      break;
-    case 'mode':
-      await setHookMode(config, gitInfo.projectPath, options.mode);
-      break;
-    default:
-      console.error(chalk.red(`Unknown action: ${action}`));
-      console.log(chalk.gray('Available actions: install, uninstall, status, mode'));
-      process.exit(1);
+  case 'install':
+    await installHooks(gitInfo.projectPath, options);
+    break;
+  case 'uninstall':
+    await uninstallHooks(gitInfo.projectPath, options);
+    break;
+  case 'status':
+    await showHookStatus(gitInfo.projectPath);
+    break;
+  case 'mode':
+    await setHookMode(config, gitInfo.projectPath, options.mode);
+    break;
+  default:
+    console.error(chalk.red(`Unknown action: ${action}`));
+    console.log(chalk.gray('Available actions: install, uninstall, status, mode'));
+    process.exit(1);
   }
 }
 

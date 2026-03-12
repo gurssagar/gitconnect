@@ -117,13 +117,13 @@ export async function commitCommand(options: CommitOptions): Promise<void> {
     
     if (options.sign && account.sshKey) {
       // Configure SSH signing
-      execSync(`git config commit.gpgsign true`, { stdio: 'pipe' });
-      execSync(`git config gpg.format ssh`, { stdio: 'pipe' });
+      execSync('git config commit.gpgsign true', { stdio: 'pipe' });
+      execSync('git config gpg.format ssh', { stdio: 'pipe' });
       execSync(`git config user.signingkey ${account.sshKey}.pub`, { stdio: 'pipe' });
     }
     
     // Execute commit
-    const result = execSync(`${commitCmd} -m "${message.replace(/"/g, '\\"')}"`, {
+    execSync(`${commitCmd} -m "${message.replace(/"/g, '\\"')}"`, {
       encoding: 'utf-8',
       stdio: 'pipe',
     });
