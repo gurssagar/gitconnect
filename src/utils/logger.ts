@@ -19,31 +19,31 @@ export class Logger {
     this.level = level;
   }
 
-  debug(message: string, ...args: any[]): void {
+  debug(message: string, ...args: unknown[]): void {
     if (this.level === 'debug' || this.debugMode) {
       console.log(chalk.gray(`[debug] ${message}`), ...args);
     }
   }
 
-  info(message: string, ...args: any[]): void {
+  info(message: string, ...args: unknown[]): void {
     if (this.level !== 'silent' && this.level !== 'error' && this.level !== 'warn') {
       console.log(chalk.blue('ℹ'), message, ...args);
     }
   }
 
-  success(message: string, ...args: any[]): void {
+  success(message: string, ...args: unknown[]): void {
     if (this.level !== 'silent') {
       console.log(chalk.green('✓'), message, ...args);
     }
   }
 
-  warn(message: string, ...args: any[]): void {
+  warn(message: string, ...args: unknown[]): void {
     if (this.level !== 'silent' && this.level !== 'error') {
       console.log(chalk.yellow('⚠'), message, ...args);
     }
   }
 
-  error(message: string, ...args: any[]): void {
+  error(message: string, ...args: unknown[]): void {
     if (this.level !== 'silent') {
       console.log(chalk.red('✗'), message, ...args);
     }
