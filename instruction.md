@@ -107,7 +107,7 @@
 - [x] Add E2E test suite
 - [x] Create shell completion scripts
 - [x] Add VS Code extension
-- [ ] Implement configuration migration
+- [x] Implement configuration migration
 - [x] Add Windows CI testing
 
 ---

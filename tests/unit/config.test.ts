@@ -66,24 +66,24 @@ describe('ConfigManager', () => {
 
       await configManager.init();
 
-      // Check accounts file
+      // Check accounts file includes version
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         path.join(configDir, 'accounts.json'),
-        JSON.stringify({ accounts: [] }, null, 2),
+        JSON.stringify({ accounts: [], version: '1.0.0' }, null, 2),
         { mode: 0o600 }
       );
 
-      // Check projects file
+      // Check projects file includes version
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         path.join(configDir, 'projects.json'),
-        JSON.stringify({ projects: {} }, null, 2),
+        JSON.stringify({ projects: {}, version: '1.0.0' }, null, 2),
         { mode: 0o600 }
       );
 
-      // Check settings file
+      // Check settings file includes version
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         path.join(configDir, 'settings.json'),
-        JSON.stringify({ defaultMode: 'prompt' }, null, 2),
+        JSON.stringify({ defaultMode: 'prompt', version: '1.0.0' }, null, 2),
         { mode: 0o600 }
       );
     });
