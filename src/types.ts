@@ -3,6 +3,7 @@ export interface Account {
   username: string;
   email: string;
   sshKey: string;
+  gpgKey?: string;
   createdAt: string;
 }
 

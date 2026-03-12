@@ -100,6 +100,7 @@ program
   .option('-m, --message <message>', 'Commit message')
   .option('--amend', 'Amend previous commit')
   .option('-s, --sign', 'Sign commit with SSH key')
+  .option('--gpg-sign', 'Sign commit with GPG key')
   .option('-a, --account <name>', 'Use specific account')
   .action(commitCommand);
 

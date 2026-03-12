@@ -4,11 +4,13 @@ import ora from 'ora';
 import { execSync } from 'child_process';
 import { ConfigManager } from '../core/config';
 import { GitManager } from '../core/git';
+import { gpgManager } from '../utils/gpg';
 
 interface CommitOptions {
   message?: string;
   amend?: boolean;
   sign?: boolean;
+  'gpg-sign'?: boolean;
   account?: string;
 }
 
@@ -120,6 +122,12 @@ export async function commitCommand(options: CommitOptions): Promise<void> {
       execSync('git config commit.gpgsign true', { stdio: 'pipe' });
       execSync('git config gpg.format ssh', { stdio: 'pipe' });
       execSync(`git config user.signingkey ${account.sshKey}.pub`, { stdio: 'pipe' });
+    } else if (options['gpg-sign'] || account.gpgKey) {
+      // Configure GPG signing
+      const keyId = account.gpgKey || gpgManager.getKeyForEmail(account.email)?.keyId;
+      if (keyId) {
+        gpgManager.signCommit(keyId);
+      }
     }
     
     // Execute commit
