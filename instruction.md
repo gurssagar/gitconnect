@@ -106,7 +106,7 @@
 ### 4. Developer Tools
 - [ ] Web dashboard for account management
 - [x] REST API for programmatic access
-- [ ] SDK for integrating GitConnect into other tools
+- [x] SDK for integrating GitConnect into other tools
 
 ### 5. Security Hardening
 - [ ] Hardware security key (YubiKey) support
