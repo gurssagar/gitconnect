@@ -13,6 +13,7 @@ import { hooksCommand } from './commands/hooks';
 import { preCommitHook, prePushHook } from './commands/hook';
 import { completionCommand } from './commands/completion';
 import { setupCommand } from './commands/setup';
+import { templateCommand } from './commands/template';
 import { ConfigManager } from './core/config';
 
 // Global error handlers
@@ -92,6 +93,31 @@ project
   .command('info')
   .description('Show current project info')
   .action(() => projectCommand('info'));
+
+// Template management
+const template = program
+  .command('template')
+  .description('Manage commit templates');
+
+template
+  .command('list')
+  .description('List all commit templates')
+  .action(() => templateCommand('list'));
+
+template
+  .command('show <name>')
+  .description('Show a commit template')
+  .action((name) => templateCommand('show', name));
+
+template
+  .command('create <name>')
+  .description('Create a new commit template')
+  .action((name) => templateCommand('create', name));
+
+template
+  .command('delete <name>')
+  .description('Delete a commit template')
+  .action((name) => templateCommand('delete', name));
 
 // Commit with account selection
 program

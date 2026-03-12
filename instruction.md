@@ -94,8 +94,8 @@
 - [ ] Centralized account management server
 
 ### 2. Advanced Git Features
-- [ ] GPG commit signing support
-- [ ] Commit template management per account
+- [x] GPG commit signing support
+- [x] Commit template management per account
 - [ ] Automatic branch naming conventions per account
 
 ### 3. Cloud Integration
