@@ -115,11 +115,11 @@
 
 ---
 
-## 🔮 Future Roadmap (v1.2.0)
+## 🔮 Future Roadmap (v1.2.0) - IN PROGRESS
 
 ### Team Collaboration
-- [ ] Share account configurations across team members
-- [ ] Team-wide SSH key distribution
+- [x] Share account configurations across team members
+- [x] Team-wide SSH key distribution
 - [ ] Centralized account management server
 
 ---
