@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-03-13
+
+### Added
+- **Interactive Setup Wizard** - `gc setup` for first-time users
+- **Shell Completion Scripts** - bash, zsh, and fish support with `gc completion`
+- **VS Code Extension** - Status bar integration and commands
+- **Configuration Migration** - Auto-migrate configs on version updates
+- **Encrypted SSH Key Storage** - Passphrase encryption support
+- **Key Rotation Automation** - Automatic key rotation with backups
+- **Audit Logging** - Comprehensive audit trail for all operations
+- **SSH Agent Integration** - Add/remove/list keys in SSH agent
+- **macOS Keychain Integration** - Secure passphrase storage on macOS
+- **Linux Secret Service Integration** - Secure passphrase storage via secret-tool
+- **Parallel SSH Key Validation** - Validate multiple keys concurrently
+- **E2E Test Suite** - 10 end-to-end workflow tests
+- **Windows CI Testing** - Added to GitHub Actions matrix
+
+### Changed
+- Improved caching for accounts and project configurations
+- Enhanced silent mode for hooks (`gc hooks silent <on|off>`)
+- Updated to 117 tests passing across 8 test suites
+
 ## [1.0.0] - 2026-03-12
 
 ### Added
@@ -43,6 +65,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TypeScript ^5.9.3
 - ESLint 9.x with flat config
 - @typescript-eslint v8
-- Jest for testing (66 tests)
+- Jest for testing (117 tests)
 - CI/CD with GitHub Actions
 - NPM and JSR publishing workflows
