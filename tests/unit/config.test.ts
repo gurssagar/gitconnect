@@ -133,7 +133,7 @@ describe('ConfigManager', () => {
 
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         path.join(configDir, 'accounts.json'),
-        JSON.stringify({ accounts: [newAccount] }, null, 2)
+        JSON.stringify({ accounts: [newAccount], version: '1.0.0' }, null, 2)
       );
     });
 
@@ -160,7 +160,7 @@ describe('ConfigManager', () => {
 
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         path.join(configDir, 'accounts.json'),
-        JSON.stringify({ accounts: [updatedAccount] }, null, 2)
+        JSON.stringify({ accounts: [updatedAccount], version: '1.0.0' }, null, 2)
       );
     });
   });
@@ -185,7 +185,7 @@ describe('ConfigManager', () => {
       expect(result).toBe(true);
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         path.join(configDir, 'accounts.json'),
-        JSON.stringify({ accounts: [] }, null, 2)
+        JSON.stringify({ accounts: [], version: '1.0.0' }, null, 2)
       );
     });
 
@@ -268,7 +268,7 @@ describe('ConfigManager', () => {
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
         path.join(configDir, 'projects.json'),
         JSON.stringify(
-          { projects: { '/path/to/project': projectConfig } },
+          { projects: { '/path/to/project': projectConfig }, version: '1.0.0' },
           null,
           2
         )

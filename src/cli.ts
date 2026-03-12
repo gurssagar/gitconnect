@@ -39,7 +39,7 @@ program
   .name('gitconnect')
   .alias('gc')
   .description('Multi-GitHub Account Manager - Auto & Explicit Mode')
-  .version('1.0.0');
+  .version('1.0.4');
 
 // Initialize
 program

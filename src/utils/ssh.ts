@@ -123,6 +123,32 @@ export class SSHManager {
   }
 
   /**
+   * Validate multiple SSH keys in parallel
+   */
+  async validateKeysParallel(keyPaths: string[]): Promise<Record<string, { valid: boolean; error?: string }>> {
+    const validationPromises = keyPaths.map(async (keyPath) => {
+      const result = await this.validateKey(keyPath);
+      return [keyPath, result] as const;
+    });
+
+    const results = await Promise.all(validationPromises);
+    return Object.fromEntries(results);
+  }
+
+  /**
+   * Test SSH connections to GitHub in parallel
+   */
+  async testGitHubConnectionsParallel(keyPaths: string[]): Promise<Record<string, { success: boolean; username?: string; error?: string }>> {
+    const testPromises = keyPaths.map(async (keyPath) => {
+      const result = await this.testGitHubConnection(keyPath);
+      return [keyPath, result] as const;
+    });
+
+    const results = await Promise.all(testPromises);
+    return Object.fromEntries(results);
+  }
+
+  /**
    * Test SSH connection to GitHub
    */
   async testGitHubConnection(keyPath: string): Promise<{ success: boolean; username?: string; error?: string }> {
@@ -478,5 +504,128 @@ export const keyRotation = {
     }
 
     return removed;
+  },
+};
+
+/**
+ * Platform-specific secure storage
+ */
+export const secureStorage = {
+  /**
+   * Store passphrase in macOS Keychain
+   */
+  async storePassphraseMacOS(keyPath: string, passphrase: string): Promise<boolean> {
+    try {
+      const serviceName = 'gitconnect';
+      const accountName = path.basename(keyPath);
+      execSync(`security add-generic-password -s "${serviceName}" -a "${accountName}" -w "${passphrase}" -U`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Retrieve passphrase from macOS Keychain
+   */
+  async getPassphraseMacOS(keyPath: string): Promise<string | null> {
+    try {
+      const serviceName = 'gitconnect';
+      const accountName = path.basename(keyPath);
+      const output = execSync(`security find-generic-password -s "${serviceName}" -a "${accountName}" -w`, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+      return output.trim();
+    } catch {
+      return null;
+    }
+  },
+
+  /**
+   * Delete passphrase from macOS Keychain
+   */
+  async deletePassphraseMacOS(keyPath: string): Promise<boolean> {
+    try {
+      const serviceName = 'gitconnect';
+      const accountName = path.basename(keyPath);
+      execSync(`security delete-generic-password -s "${serviceName}" -a "${accountName}"`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Store passphrase in Linux secret service (via secret-tool)
+   */
+  async storePassphraseLinux(keyPath: string, passphrase: string): Promise<boolean> {
+    try {
+      const label = `gitconnect:${path.basename(keyPath)}`;
+      execSync(`echo "${passphrase}" | secret-tool store --label="${label}" service gitconnect key "${path.basename(keyPath)}"`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Retrieve passphrase from Linux secret service
+   */
+  async getPassphraseLinux(keyPath: string): Promise<string | null> {
+    try {
+      const output = execSync(`secret-tool lookup service gitconnect key "${path.basename(keyPath)}"`, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+      return output.trim() || null;
+    } catch {
+      return null;
+    }
+  },
+
+  /**
+   * Delete passphrase from Linux secret service
+   */
+  async deletePassphraseLinux(keyPath: string): Promise<boolean> {
+    try {
+      execSync(`secret-tool clear service gitconnect key "${path.basename(keyPath)}"`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Detect platform and store passphrase appropriately
+   */
+  async storePassphrase(keyPath: string, passphrase: string): Promise<boolean> {
+    const platform = os.platform();
+    if (platform === 'darwin') {
+      return this.storePassphraseMacOS(keyPath, passphrase);
+    } else if (platform === 'linux') {
+      return this.storePassphraseLinux(keyPath, passphrase);
+    }
+    return false;
+  },
+
+  /**
+   * Detect platform and retrieve passphrase
+   */
+  async getPassphrase(keyPath: string): Promise<string | null> {
+    const platform = os.platform();
+    if (platform === 'darwin') {
+      return this.getPassphraseMacOS(keyPath);
+    } else if (platform === 'linux') {
+      return this.getPassphraseLinux(keyPath);
+    }
+    return null;
+  },
+
+  /**
+   * Detect platform and delete passphrase
+   */
+  async deletePassphrase(keyPath: string): Promise<boolean> {
+    const platform = os.platform();
+    if (platform === 'darwin') {
+      return this.deletePassphraseMacOS(keyPath);
+    } else if (platform === 'linux') {
+      return this.deletePassphraseLinux(keyPath);
+    }
+    return false;
   },
 };
