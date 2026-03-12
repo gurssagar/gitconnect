@@ -13,6 +13,24 @@ import { hooksCommand } from './commands/hooks';
 import { preCommitHook, prePushHook } from './commands/hook';
 import { ConfigManager } from './core/config';
 
+// Global error handlers
+process.on('uncaughtException', (error: Error) => {
+  console.error(chalk.red.bold('Fatal Error:'), error.message);
+  if (process.env.GITCONNECT_DEBUG === 'true') {
+    console.error(chalk.gray(error.stack));
+  }
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason: unknown) => {
+  const message = reason instanceof Error ? reason.message : String(reason);
+  console.error(chalk.red.bold('Unhandled Promise Rejection:'), message);
+  if (process.env.GITCONNECT_DEBUG === 'true' && reason instanceof Error) {
+    console.error(chalk.gray(reason.stack));
+  }
+  process.exit(1);
+});
+
 const program = new Command();
 
 program
