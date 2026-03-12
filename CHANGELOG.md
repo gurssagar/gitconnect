@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-03-13
+
+### Added
+
+#### Advanced Git Features
+- **GPG Commit Signing** - Sign commits with GPG keys (`--gpg-sign` flag)
+- **Commit Template Management** - Per-account commit templates with variable substitution
+- **Branch Naming Conventions** - Automatic branch name generation (`gc branch <type> <description>`)
+
+#### Cloud Integration
+- **GitHub Enterprise Server Support** - Full support for GitHub Enterprise hosts
+- **GitLab Support** - Add and manage GitLab accounts
+- **Bitbucket Support** - Add and manage Bitbucket accounts
+
+#### Developer Tools
+- **REST API Server** - Programmatic access via HTTP API on port 3777
+- **SDK** - JavaScript/TypeScript SDK for integrating GitConnect into other tools
+- **Web Dashboard** - Browser-based account management interface
+
+#### Security Hardening
+- **YubiKey Support** - Hardware security key integration for SSH authentication
+- **Biometric Authentication** - Touch ID/Face ID integration on supported platforms
+- **Zero-Trust Mode** - Continuous verification for sensitive operations
+
+#### Team Collaboration
+- **Team Configuration Export/Import** - Share account configurations across team members
+- **Centralized Account Management** - Optional central server for team-wide account distribution
+
+### Changed
+- Version bumped to 1.1.0
+- Enhanced account model with platform, enterprise host, and template fields
+
 ## [1.0.4] - 2026-03-13
 
 ### Added
