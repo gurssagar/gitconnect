@@ -154,7 +154,7 @@ npm update @typescript-eslint/eslint-plugin @typescript-eslint/parser
 - [x] Update vulnerable dependencies (upgraded to @typescript-eslint v8, ESLint v9)
 - [x] Add LICENSE file (MIT)
 - [x] Update README with correct GitHub URLs
-- [ ] Add integration tests for CLI commands
+- [x] Add integration tests for CLI commands
 - [x] Implement global error handling
 
 ### Important (Should Complete)
