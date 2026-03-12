@@ -1,23 +1,24 @@
 {
   "name": "@technobromo/gitconnect",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "license": "MIT",
-  "exports": "./dist/cli.js",
+  "exports": {
+    ".": "./src/cli.ts"
+  },
   "publish": {
     "include": [
-      "dist/",
+      "src/",
       "README.md",
       "LICENSE",
-      "package.json"
+      "package.json",
+      "tsconfig.json"
     ],
     "exclude": [
       "node_modules/",
       "tests/",
       "docs/",
-      "src/",
       "*.test.ts",
-      "jest.config.js",
-      "tsconfig.json"
+      "jest.config.js"
     ]
   }
 }
