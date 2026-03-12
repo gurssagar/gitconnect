@@ -285,7 +285,7 @@ GitConnect is now **Production Ready** ✅
 - [ ] Interactive rebase with account switching
 - [ ] Merge conflict resolution helper
 - [x] Stash management per account
-- [ ] Cherry-pick across accounts
+- [x] Cherry-pick across accounts
 
 ### 3. UI/UX Improvements
 - [ ] TUI (Terminal User Interface) with blessed/ink
@@ -297,7 +297,7 @@ GitConnect is now **Production Ready** ✅
 - [ ] SSO/SAML integration
 - [ ] Role-based access control
 - [ ] Compliance reporting
-- [ ] Audit log export (SIEM integration)
+- [x] Audit log export (SIEM integration)
 
 ### 5. Developer Experience
 - [x] Git alias management
