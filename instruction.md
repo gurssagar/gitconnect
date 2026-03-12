@@ -282,8 +282,8 @@ GitConnect is now **Production Ready** ✅
 - [x] Pre-commit framework integration
 
 ### 2. Advanced Features
-- [ ] Interactive rebase with account switching
-- [ ] Merge conflict resolution helper
+- [x] Interactive rebase with account switching
+- [x] Merge conflict resolution helper
 - [x] Stash management per account
 - [x] Cherry-pick across accounts
 
