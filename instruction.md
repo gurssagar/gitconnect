@@ -164,8 +164,7 @@ npm update @typescript-eslint/eslint-plugin @typescript-eslint/parser
 - [x] Add tests for SSH utilities
 - [x] Add tests for Logger utilities
 - [x] Add tests for init command
-- [ ] Add tests for remaining command files
-- [ ] Document environment variables
+- [x] Document environment variables
 
 ### Recommended (Nice to Have)
 - [ ] Add E2E test suite
