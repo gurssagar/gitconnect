@@ -120,7 +120,7 @@ export async function setupCommand(): Promise<void> {
         type: 'input',
         name: 'existingPath',
         message: 'Path to existing SSH private key:',
-        validate: async (input: string) => {
+        validate: async (input: string): Promise<boolean | string> => {
           try {
             await fs.access(input);
             return true;

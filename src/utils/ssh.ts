@@ -363,7 +363,6 @@ export const encryptedKeyStorage = {
       }
 
       // Use ssh-keygen to add a passphrase
-      const tempPath = `${keyPath}.tmp`;
       execSync(`ssh-keygen -p -P "" -N "${passphrase}" -f "${keyPath}"`, { stdio: 'pipe' });
       return true;
     } catch {

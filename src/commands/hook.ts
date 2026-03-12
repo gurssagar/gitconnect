@@ -66,7 +66,7 @@ export async function preCommitHook(): Promise<void> {
       ? accounts.find(a => a.email === currentIdentity.email)
       : undefined;
 
-    const silent = await isSilentMode();
+    const _silent = await isSilentMode();
 
     try {
       const { selectedAccount, confirm } = await inquirer.prompt([
