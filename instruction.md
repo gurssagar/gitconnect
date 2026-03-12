@@ -273,5 +273,39 @@ GitConnect is now **Production Ready** ✅
 
 ---
 
+## 🔮 Future Roadmap (v1.2.0+) - ENHANCEMENTS
+
+### 1. CI/CD Integration
+- [ ] GitHub Actions integration - auto-detect and configure for CI/CD
+- [ ] GitLab CI integration
+- [ ] Jenkins plugin support
+- [ ] Pre-commit framework integration
+
+### 2. Advanced Features
+- [ ] Interactive rebase with account switching
+- [ ] Merge conflict resolution helper
+- [ ] Stash management per account
+- [ ] Cherry-pick across accounts
+
+### 3. UI/UX Improvements
+- [ ] TUI (Terminal User Interface) with blessed/ink
+- [ ] Desktop GUI application (Electron/Tauri)
+- [ ] Mobile companion app
+- [ ] Browser extension for GitHub/GitLab
+
+### 4. Enterprise Features
+- [ ] SSO/SAML integration
+- [ ] Role-based access control
+- [ ] Compliance reporting
+- [ ] Audit log export (SIEM integration)
+
+### 5. Developer Experience
+- [ ] Git alias management
+- [ ] Custom hook scripts per project
+- [ ] Gitignore template management
+- [ ] Worktree support
+
+---
+
 *Last Updated: 2026-03-13*
 *Project Version: 1.1.0*
