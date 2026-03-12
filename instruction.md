@@ -155,7 +155,7 @@ npm update @typescript-eslint/eslint-plugin @typescript-eslint/parser
 - [x] Add LICENSE file (MIT)
 - [x] Update README with correct GitHub URLs
 - [ ] Add integration tests for CLI commands
-- [ ] Implement global error handling
+- [x] Implement global error handling
 
 ### Important (Should Complete)
 - [x] Add CHANGELOG.md
