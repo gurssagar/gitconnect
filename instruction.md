@@ -100,8 +100,8 @@
 
 ### 3. Cloud Integration
 - [ ] GitHub OAuth app support
-- [ ] GitHub Enterprise Server support
-- [ ] GitLab and Bitbucket support
+- [x] GitHub Enterprise Server support
+- [x] GitLab and Bitbucket support
 
 ### 4. Developer Tools
 - [ ] Web dashboard for account management

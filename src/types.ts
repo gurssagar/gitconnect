@@ -1,3 +1,5 @@
+import { GitPlatform } from './utils/platforms';
+
 export interface Account {
   id: string;
   username: string;
@@ -6,6 +8,8 @@ export interface Account {
   gpgKey?: string;
   commitTemplate?: string;
   branchPrefix?: string;
+  platform?: GitPlatform;
+  enterpriseHost?: string;
   createdAt: string;
 }
 
