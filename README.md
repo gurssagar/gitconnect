@@ -117,6 +117,13 @@ GitConnect stores configuration in `~/.gitconnect/`:
 - Git
 - SSH (for key generation)
 
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `GITCONNECT_DEBUG` | Set to `true` to enable debug logging |
+| `HOME` | User home directory (used for SSH key paths) |
+
 ## License
 
 MIT

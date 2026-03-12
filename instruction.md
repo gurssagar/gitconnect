@@ -163,7 +163,8 @@ npm update @typescript-eslint/eslint-plugin @typescript-eslint/parser
 - [ ] Replace `any` types with proper types (15 warnings remain)
 - [x] Add tests for SSH utilities
 - [x] Add tests for Logger utilities
-- [ ] Add tests for command files
+- [x] Add tests for init command
+- [ ] Add tests for remaining command files
 - [ ] Document environment variables
 
 ### Recommended (Nice to Have)
