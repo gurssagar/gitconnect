@@ -160,7 +160,7 @@ npm update @typescript-eslint/eslint-plugin @typescript-eslint/parser
 ### Important (Should Complete)
 - [x] Add CHANGELOG.md
 - [x] Fix unused imports and variables
-- [ ] Replace `any` types with proper types (13 warnings remain, reduced from 15)
+- [ ] Replace `any` types with proper types (10 warnings remain, reduced from 15)
 - [x] Add tests for SSH utilities
 - [x] Add tests for Logger utilities
 - [x] Add tests for init command
