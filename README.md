@@ -10,16 +10,22 @@ Manage multiple GitHub accounts seamlessly with per-project account selection, a
 - 🎯 **Per-Project Config** - Different accounts for different projects
 - 🤖 **Auto Mode** - Automatically use configured account
 - 💬 **Prompt Mode** - Ask before each commit/push
-- 🔏 **SSH Signing** - Sign commits with SSH keys
+- 🔏 **Commit Signing** - SSH and GPG commit signing support
 - 🪝 **Git Hooks** - Pre-commit and pre-push hooks
 - ⚡ **Quick Switch** - Easy account switching with `gc use`
+- 🌐 **Multi-Platform** - GitHub, GitLab, Bitbucket, and GitHub Enterprise support
+- 🔑 **Hardware Keys** - YubiKey integration for SSH authentication
+- 📝 **Branch Naming** - Automatic branch name conventions
+- 📋 **Templates** - Commit templates per account
+- 🌍 **REST API** - Programmatic access via HTTP API
+- 👥 **Team Sharing** - Share account configurations across teams
 
 ## Installation
 
 ```bash
-npm install -g gitconnect
+npm install -g @technobromo/gitconnect
 # or
-npx gitconnect init
+npx @technobromo/gitconnect init
 ```
 
 ## Quick Start
@@ -62,7 +68,24 @@ gc project info             # Show project info
 gc commit -m "message"      # Commit with account selection
 gc commit --amend           # Amend last commit
 gc commit --sign            # Sign commit with SSH
+gc commit --gpg-sign        # Sign commit with GPG
 gc push                     # Push with account verification
+```
+
+### Branch Management
+```bash
+gc branch feature "add login"           # Create feature branch
+gc branch bugfix "fix crash"            # Create bugfix branch
+gc branch hotfix "urgent fix"           # Create hotfix branch
+gc branch feature "add login" -t PROJ-123  # With ticket ID
+```
+
+### Template Management
+```bash
+gc template list            # List commit templates
+gc template add <name>      # Add a new template
+gc template get <name>      # Show template content
+gc template remove <name>   # Remove a template
 ```
 
 ### Hooks
@@ -110,6 +133,10 @@ GitConnect stores configuration in `~/.gitconnect/`:
 - Config files use `0600` permissions
 - No credentials stored in git history
 - Local git identity only (not global)
+- Encrypted SSH key storage with passphrase support
+- YubiKey hardware security key integration
+- Biometric authentication (macOS Touch ID, Linux fprintd)
+- Audit logging for all operations
 
 ## Requirements
 
@@ -123,6 +150,73 @@ GitConnect stores configuration in `~/.gitconnect/`:
 |----------|-------------|
 | `GITCONNECT_DEBUG` | Set to `true` to enable debug logging |
 | `HOME` | User home directory (used for SSH key paths) |
+
+## REST API
+
+GitConnect includes a REST API server for programmatic access:
+
+```bash
+# Start the API server (default: http://localhost:3777)
+gc api start
+
+# Available endpoints:
+GET /api/accounts      # List all accounts
+GET /api/accounts/:id  # Get account by ID
+GET /api/projects      # List all projects
+GET /api/status        # Get GitConnect status
+```
+
+## SDK
+
+Use GitConnect programmatically in your Node.js applications:
+
+```typescript
+import { GitConnectSDK } from '@technobromo/gitconnect';
+
+const sdk = new GitConnectSDK();
+
+// Check if initialized
+const ready = await sdk.isInitialized();
+
+// Get accounts
+const accounts = await sdk.getAccounts();
+
+// Create a commit
+await sdk.commit({
+  message: 'feat: add new feature',
+  sign: true
+});
+
+// Create a branch
+await sdk.createBranch({
+  type: 'feature',
+  description: 'new feature',
+  username: 'developer'
+});
+```
+
+## Multi-Platform Support
+
+GitConnect supports multiple git platforms:
+
+| Platform | SSH Host | API |
+|----------|----------|-----|
+| GitHub | github.com | api.github.com |
+| GitLab | gitlab.com | gitlab.com/api/v4 |
+| Bitbucket | bitbucket.org | api.bitbucket.org |
+| GitHub Enterprise | Custom | Custom |
+
+## Team Collaboration
+
+Share account configurations with your team:
+
+```bash
+# Export team configuration
+gc team export team-config.json
+
+# Import team configuration
+gc team import team-config.json
+```
 
 ## License
 
