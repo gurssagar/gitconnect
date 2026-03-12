@@ -302,8 +302,8 @@ GitConnect is now **Production Ready** ✅
 ### 5. Developer Experience
 - [x] Git alias management
 - [ ] Custom hook scripts per project
-- [ ] Gitignore template management
-- [ ] Worktree support
+- [x] Gitignore template management
+- [x] Worktree support
 
 ---
 
