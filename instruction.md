@@ -109,7 +109,7 @@
 - [x] SDK for integrating GitConnect into other tools
 
 ### 5. Security Hardening
-- [ ] Hardware security key (YubiKey) support
+- [x] Hardware security key (YubiKey) support
 - [ ] Biometric authentication integration
 - [ ] Zero-trust architecture mode
 
