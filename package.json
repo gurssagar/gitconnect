@@ -1,6 +1,6 @@
 {
   "name": "gitconnect",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Multi-GitHub Account Manager - Auto & Explicit Mode",
   "main": "dist/index.js",
   "exports": "./dist/cli.js",
