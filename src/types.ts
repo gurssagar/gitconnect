@@ -14,6 +14,7 @@ export interface ProjectConfig {
 
 export interface GitConnectConfig {
   defaultMode: 'auto' | 'prompt' | 'off';
+  silent?: boolean;
   version?: string;
 }
 

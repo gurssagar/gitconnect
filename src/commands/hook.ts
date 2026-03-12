@@ -4,6 +4,19 @@ import { ConfigManager } from '../core/config';
 import { GitManager } from '../core/git';
 
 /**
+ * Check if silent mode is enabled
+ */
+async function isSilentMode(): Promise<boolean> {
+  try {
+    const config = new ConfigManager();
+    const settings = await config.getSettings();
+    return settings.silent === true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Handler for pre-commit hook
  * Called by .git/hooks/pre-commit
  */
@@ -53,6 +66,8 @@ export async function preCommitHook(): Promise<void> {
       ? accounts.find(a => a.email === currentIdentity.email)
       : undefined;
 
+    const silent = await isSilentMode();
+
     try {
       const { selectedAccount, confirm } = await inquirer.prompt([
         {
@@ -87,8 +102,9 @@ export async function preCommitHook(): Promise<void> {
   } else {
     // Auto mode - show which account will be used
     const currentIdentity = await git.getIdentity();
-    
-    if (currentIdentity?.email !== account.email) {
+    const silent = await isSilentMode();
+
+    if (!silent && currentIdentity?.email !== account.email) {
       console.log(chalk.cyan(`GitConnect: Using account '${account.username}'`));
     }
   }
@@ -155,11 +171,14 @@ export async function prePushHook(): Promise<void> {
 
   // Find matching account
   const matchingAccount = accounts.find(a => a.email === currentIdentity.email);
-  
-  if (matchingAccount) {
-    console.log(chalk.cyan(`GitConnect: Pushing as '${matchingAccount.username}'`));
-  } else {
-    console.log(chalk.yellow(`GitConnect: Current identity (${currentIdentity.email}) not in accounts`));
+  const silent = await isSilentMode();
+
+  if (!silent) {
+    if (matchingAccount) {
+      console.log(chalk.cyan(`GitConnect: Pushing as '${matchingAccount.username}'`));
+    } else {
+      console.log(chalk.yellow(`GitConnect: Current identity (${currentIdentity.email}) not in accounts`));
+    }
   }
 
   // Exit successfully to allow push

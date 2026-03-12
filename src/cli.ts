@@ -142,6 +142,11 @@ hooks
   .description('Set hook mode (prompt/auto/off)')
   .action((mode) => hooksCommand('mode', { mode }));
 
+hooks
+  .command('silent [mode]')
+  .description('Enable/disable silent mode (on/off)')
+  .action((mode) => hooksCommand('silent', { silent: mode as 'on' | 'off' }));
+
 // Internal hook handlers (called by git hooks)
 program
   .command('hook-pre-commit')

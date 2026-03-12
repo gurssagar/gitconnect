@@ -8,6 +8,7 @@ import { GitManager } from '../core/git';
 interface HookOptions {
   type?: 'commit' | 'push' | 'all';
   mode?: 'prompt' | 'auto' | 'off';
+  silent?: 'on' | 'off';
 }
 
 const PRE_COMMIT_HOOK = `#!/bin/sh
@@ -65,9 +66,12 @@ export async function hooksCommand(action: string, options: HookOptions): Promis
   case 'mode':
     await setHookMode(config, gitInfo.projectPath, options.mode);
     break;
+  case 'silent':
+    await setSilentMode(config, options.silent === 'on');
+    break;
   default:
     console.error(chalk.red(`Unknown action: ${action}`));
-    console.log(chalk.gray('Available actions: install, uninstall, status, mode'));
+    console.log(chalk.gray('Available actions: install, uninstall, status, mode, silent'));
     process.exit(1);
   }
 }
@@ -208,6 +212,12 @@ async function showHookStatus(projectPath: string): Promise<void> {
   }
 
   console.log(chalk.gray('\n  Run `gitconnect hooks mode <prompt|auto|off>` to change'));
+
+  // Show silent mode status
+  const settings = await config.getSettings();
+  console.log(chalk.cyan('\n  Silent Mode:'));
+  console.log(`    ${settings.silent ? '🔇' : '🔊'} ${settings.silent ? 'enabled' : 'disabled'}`);
+  console.log(chalk.gray('\n  Run `gitconnect hooks silent <on|off>` to change'));
 }
 
 async function setHookMode(
@@ -276,4 +286,15 @@ async function setHookMode(
   }
 
   console.log(chalk.green(`✓ Hook mode set to '${mode}'`));
+}
+
+async function setSilentMode(config: ConfigManager, silent: boolean): Promise<void> {
+  const settings = await config.getSettings();
+  settings.silent = silent;
+  await config.saveSettings(settings);
+
+  console.log(chalk.green(`✓ Silent mode ${silent ? 'enabled' : 'disabled'}`));
+  if (silent) {
+    console.log(chalk.gray('  Hooks will no longer output informational messages'));
+  }
 }
