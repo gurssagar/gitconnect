@@ -1,6 +1,9 @@
 {
-  "name": "gitconnect",
+  "name": "@technobromo/gitconnect",
   "version": "1.0.3",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Multi-GitHub Account Manager - Auto & Explicit Mode",
   "main": "dist/index.js",
   "exports": "./dist/cli.js",
