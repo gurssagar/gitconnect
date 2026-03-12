@@ -105,7 +105,7 @@
 
 ### 4. Developer Tools
 - [ ] Web dashboard for account management
-- [ ] REST API for programmatic access
+- [x] REST API for programmatic access
 - [ ] SDK for integrating GitConnect into other tools
 
 ### 5. Security Hardening
