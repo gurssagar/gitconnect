@@ -94,7 +94,7 @@ export class TemplateManager {
 {{body}}
 
 {{footer}}`,
-      simple: `{{description}}`,
+      simple: '{{description}}',
       detailed: `{{summary}}
 
 Why:

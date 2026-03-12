@@ -92,14 +92,14 @@ export const platformManager = {
    */
   getAddKeyUrl(platform: GitPlatform, host?: string): string {
     switch (platform) {
-      case 'github':
-        return 'https://github.com/settings/ssh/new';
-      case 'gitlab':
-        return 'https://gitlab.com/-/profile/keys';
-      case 'bitbucket':
-        return 'https://bitbucket.org/account/settings/ssh-keys/';
-      default:
-        return host ? `https://${host}/settings/ssh` : '';
+    case 'github':
+      return 'https://github.com/settings/ssh/new';
+    case 'gitlab':
+      return 'https://gitlab.com/-/profile/keys';
+    case 'bitbucket':
+      return 'https://bitbucket.org/account/settings/ssh-keys/';
+    default:
+      return host ? `https://${host}/settings/ssh` : '';
     }
   },
 };

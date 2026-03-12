@@ -34,7 +34,7 @@ export class CentralServer {
   }
 
   async stop(): Promise<void> {
-    return new Promise((resolve) => { this.server?.close(() => resolve()) || resolve() });
+    return new Promise((resolve) => { this.server?.close(() => resolve()) || resolve(); });
   }
 
   private async handleRequest(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {

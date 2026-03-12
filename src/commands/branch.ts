@@ -1,5 +1,4 @@
 import chalk from 'chalk';
-import inquirer from 'inquirer';
 import { ConfigManager } from '../core/config';
 import { branchManager } from '../utils/branch';
 

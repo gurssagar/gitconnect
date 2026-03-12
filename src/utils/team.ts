@@ -38,10 +38,9 @@ export const teamManager = {
    */
   async importConfig(inputPath: string): Promise<number> {
     const config = JSON.parse(await fs.readFile(inputPath, 'utf-8')) as TeamConfig;
-    const configDir = path.join(os.homedir(), '.gitconnect');
     let imported = 0;
     for (const account of config.accounts) {
-      try { execSync(`gitconnect account add`, { input: JSON.stringify(account), stdio: 'pipe' }); imported++; } catch { /* skip */ }
+      try { execSync('gitconnect account add', { input: JSON.stringify(account), stdio: 'pipe' }); imported++; } catch { /* skip */ }
     }
     return imported;
   },

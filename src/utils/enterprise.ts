@@ -75,13 +75,12 @@ export const gitHubEnterprise = {
    * Configure git for enterprise host
    */
   configureForEnterprise(host: string, keyPath: string): void {
-    // Add SSH config entry
-    const sshConfig = `Host ${host}
+    // Note: In production, this would append to ~/.ssh/config
+    const _sshConfig = `Host ${host}
   HostName ${host}
   User git
   IdentityFile ${keyPath}
   IdentitiesOnly yes
 `;
-    // Note: In production, this would append to ~/.ssh/config
   },
 };

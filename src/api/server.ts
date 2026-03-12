@@ -4,9 +4,6 @@
  */
 
 import * as http from 'http';
-import * as fs from 'fs/promises';
-import * as path from 'path';
-import * as os from 'os';
 import { ConfigManager } from '../core/config';
 
 export interface APIServerOptions {

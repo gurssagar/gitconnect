@@ -6,18 +6,18 @@ export async function templateCommand(action: string, name?: string): Promise<vo
   await templateManager.initDefaultTemplates();
 
   switch (action) {
-    case 'list':
-      await listTemplates();
-      break;
-    case 'show':
-      await showTemplate(name!);
-      break;
-    case 'create':
-      await createTemplate(name!);
-      break;
-    case 'delete':
-      await deleteTemplate(name!);
-      break;
+  case 'list':
+    await listTemplates();
+    break;
+  case 'show':
+    await showTemplate(name!);
+    break;
+  case 'create':
+    await createTemplate(name!);
+    break;
+  case 'delete':
+    await deleteTemplate(name!);
+    break;
   }
 }
 
