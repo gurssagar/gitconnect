@@ -381,3 +381,102 @@ export const encryptedKeyStorage = {
     }
   },
 };
+
+/**
+ * Key rotation utilities
+ */
+export const keyRotation = {
+  /**
+   * Generate a new key to replace an existing one
+   */
+  async rotateKey(options: {
+    oldKeyPath: string;
+    email: string;
+    username: string;
+    backup?: boolean;
+  }): Promise<{ newPath: string; publicKey: string; backupPath?: string }> {
+    const { oldKeyPath, email, username, backup = true } = options;
+
+    // Backup old key if requested
+    let backupPath: string | undefined;
+    if (backup) {
+      backupPath = `${oldKeyPath}.backup.${Date.now()}`;
+      await fs.copyFile(oldKeyPath, backupPath);
+      await fs.copyFile(`${oldKeyPath}.pub`, `${backupPath}.pub`);
+    }
+
+    // Generate new key with timestamp
+    const sshDir = path.dirname(oldKeyPath);
+    const newKeyPath = path.join(sshDir, `gitconnect_${username}_${Date.now()}`);
+
+    // Generate new key
+    execSync(`ssh-keygen -t ed25519 -C "${email}" -f "${newKeyPath}" -N ""`, { stdio: 'pipe' });
+
+    // Read public key
+    const publicKey = (await fs.readFile(`${newKeyPath}.pub`, 'utf-8')).trim();
+
+    return { newPath: newKeyPath, publicKey, backupPath };
+  },
+
+  /**
+   * Get key age in days
+   */
+  async getKeyAge(keyPath: string): Promise<number | null> {
+    try {
+      const stats = await fs.stat(keyPath);
+      const ageMs = Date.now() - stats.mtimeMs;
+      return Math.floor(ageMs / (1000 * 60 * 60 * 24));
+    } catch {
+      return null;
+    }
+  },
+
+  /**
+   * Check if key should be rotated based on age
+   */
+  async shouldRotate(keyPath: string, maxAgeDays: number = 90): Promise<boolean> {
+    const age = await this.getKeyAge(keyPath);
+    return age !== null && age > maxAgeDays;
+  },
+
+  /**
+   * List keys that need rotation
+   */
+  async listKeysNeedingRotation(keys: string[], maxAgeDays: number = 90): Promise<Array<{ path: string; age: number }>> {
+    const result: Array<{ path: string; age: number }> = [];
+
+    for (const keyPath of keys) {
+      const age = await this.getKeyAge(keyPath);
+      if (age !== null && age > maxAgeDays) {
+        result.push({ path: keyPath, age });
+      }
+    }
+
+    return result;
+  },
+
+  /**
+   * Clean up old backup keys
+   */
+  async cleanupBackups(keyPath: string, keepCount: number = 3): Promise<number> {
+    const dir = path.dirname(keyPath);
+    const baseName = path.basename(keyPath);
+    const files = await fs.readdir(dir);
+
+    // Find backup files
+    const backups = files
+      .filter(f => f.startsWith(`${baseName}.backup.`))
+      .sort()
+      .reverse();
+
+    // Remove old backups
+    let removed = 0;
+    for (let i = keepCount; i < backups.length; i++) {
+      await fs.unlink(path.join(dir, backups[i]));
+      await fs.unlink(path.join(dir, `${backups[i]}.pub`)).catch(() => {});
+      removed++;
+    }
+
+    return removed;
+  },
+};
