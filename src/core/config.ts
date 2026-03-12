@@ -33,7 +33,7 @@ export class ConfigManager {
     console.log(`Config directory: ${this.configDir}`);
   }
 
-  private async ensureFile(filePath: string, defaultContent: any): Promise<void> {
+  private async ensureFile(filePath: string, defaultContent: unknown): Promise<void> {
     try {
       await fs.access(filePath);
     } catch {

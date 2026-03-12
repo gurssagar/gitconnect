@@ -105,9 +105,9 @@ async function addAccount(config: ConfigManager): Promise<void> {
     } catch {
       // Key might not have .pub extension
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     spinner.fail(chalk.red('Failed to add account'));
-    console.error(error.message);
+    console.error(error instanceof Error ? error.message : String(error));
     process.exit(1);
   }
 }

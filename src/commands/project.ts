@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { ConfigManager } from '../core/config';
 import { GitManager } from '../core/git';
+import { GitInfo } from '../types';
 
 export async function projectCommand(action: string, mode?: string): Promise<void> {
   const config = new ConfigManager();
@@ -131,7 +132,7 @@ async function setProjectMode(
 async function showProjectInfo(
   config: ConfigManager,
   git: GitManager,
-  gitInfo: any
+  gitInfo: GitInfo
 ): Promise<void> {
   console.log(chalk.cyan('\n📁 Project Info\n'));
   

@@ -98,11 +98,11 @@ export class GitManager {
         success: true,
         output: result.pushed?.[0]?.local || 'Pushed successfully',
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
         output: '',
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   }

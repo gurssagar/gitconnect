@@ -132,15 +132,15 @@ export async function commitCommand(options: CommitOptions): Promise<void> {
     console.log(chalk.gray(`  Author: ${account.username} <${account.email}>`));
     console.log(chalk.gray(`  Branch: ${gitInfo.currentBranch}`));
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     spinner.fail(chalk.red('Commit failed'));
-    
+
     // Check if it's just "nothing to commit"
-    const stderr = error.stderr?.toString() || '';
+    const stderr = error instanceof Error ? (error as Error & { stderr?: Buffer }).stderr?.toString() || '' : '';
     if (stderr.includes('nothing to commit')) {
       console.log(chalk.yellow('Nothing to commit, working tree clean'));
     } else {
-      console.error(chalk.red(error.message));
+      console.error(chalk.red(error instanceof Error ? error.message : String(error)));
     }
     process.exit(1);
   }

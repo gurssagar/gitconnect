@@ -54,8 +54,8 @@ export class SSHManager {
         type,
         comment: email,
       };
-    } catch (error: any) {
-      throw new Error(`Failed to generate SSH key: ${error.message}`);
+    } catch (error: unknown) {
+      throw new Error(`Failed to generate SSH key: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -81,8 +81,8 @@ export class SSHManager {
         type,
         comment,
       };
-    } catch (error: any) {
-      throw new Error(`Failed to import SSH key: ${error.message}`);
+    } catch (error: unknown) {
+      throw new Error(`Failed to import SSH key: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -110,7 +110,7 @@ export class SSHManager {
       }
 
       return { valid: true };
-    } catch (_error: any) {
+    } catch (_error: unknown) {
       return { valid: false, error: `Key not found: ${keyPath}` };
     }
   }
@@ -130,19 +130,20 @@ export class SSHManager {
       }
       
       return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
       // ssh exits with 1 on successful auth (because it's a shell, not a command)
-      const output = error.stdout || error.stderr || error.message;
+      const execError = error as Error & { stdout?: string; stderr?: string };
+      const output = execError.stdout || execError.stderr || (error instanceof Error ? error.message : String(error));
       const match = output.match(/Hi\s+(\w+)!.*authenticated/);
       if (match) {
         return { success: true, username: match[1] };
       }
-      
+
       // Permission denied
       if (output.includes('Permission denied')) {
         return { success: false, error: 'Permission denied - key not authorized for GitHub' };
       }
-      
+
       return { success: false, error: output };
     }
   }
