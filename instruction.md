@@ -110,8 +110,8 @@
 
 ### 5. Security Hardening
 - [x] Hardware security key (YubiKey) support
-- [ ] Biometric authentication integration
-- [ ] Zero-trust architecture mode
+- [x] Biometric authentication integration
+- [x] Zero-trust architecture mode
 
 ---
 
