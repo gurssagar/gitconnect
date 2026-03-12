@@ -96,7 +96,7 @@
 ### 2. Advanced Git Features
 - [x] GPG commit signing support
 - [x] Commit template management per account
-- [ ] Automatic branch naming conventions per account
+- [x] Automatic branch naming conventions per account
 
 ### 3. Cloud Integration
 - [ ] GitHub OAuth app support

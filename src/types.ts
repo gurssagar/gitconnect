@@ -5,6 +5,7 @@ export interface Account {
   sshKey: string;
   gpgKey?: string;
   commitTemplate?: string;
+  branchPrefix?: string;
   createdAt: string;
 }
 

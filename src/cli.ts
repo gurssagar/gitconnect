@@ -14,6 +14,7 @@ import { preCommitHook, prePushHook } from './commands/hook';
 import { completionCommand } from './commands/completion';
 import { setupCommand } from './commands/setup';
 import { templateCommand } from './commands/template';
+import { branchCommand } from './commands/branch';
 import { ConfigManager } from './core/config';
 
 // Global error handlers
@@ -118,6 +119,14 @@ template
   .command('delete <name>')
   .description('Delete a commit template')
   .action((name) => templateCommand('delete', name));
+
+// Branch management
+program
+  .command('branch <type> <description>')
+  .description('Create a branch with naming convention (feature|bugfix|hotfix|release|chore)')
+  .option('-t, --ticket <id>', 'Ticket ID (e.g., JIRA-123)')
+  .option('-a, --account <name>', 'Account to use for branch prefix')
+  .action(branchCommand);
 
 // Commit with account selection
 program
