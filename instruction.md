@@ -4,7 +4,7 @@
 
 **GitConnect** is a Multi-GitHub Account Manager CLI tool that enables developers to manage multiple GitHub accounts with per-project account selection, automatic git identity switching, and commit signing.
 
-### Current Version: 1.0.4
+### Current Version: 1.1.0
 
 ---
 
