@@ -17,7 +17,7 @@
 - **Project Configuration**: Per-project account binding with auto/prompt modes
 - **Git Integration**: Automatic identity switching (user.name, user.email)
 - **SSH Key Management**: Generation, import, validation, and GitHub connection testing
-- **Hook System**: Pre-commit and pre-push hooks with configurable modes
+- **Hook System**: Pre-commit and pre-push hooks with configurable modes and silent option
 - **Commit Signing**: SSH-based commit signing support
 
 #### 2. Architecture
@@ -210,6 +210,7 @@ GitConnect is now **Production Ready** ✅
 4. ✅ **Documentation** - LICENSE (MIT), CHANGELOG.md, correct URLs
 5. ✅ **Global error handling** - Implemented
 6. ✅ **Integration tests** - CLI integration tests added
+7. ✅ **Silent hook mode** - `gc hooks silent <on|off>` to control hook output
 
 ### Git Commits Made
 - 10 commits improving production readiness
