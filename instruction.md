@@ -105,7 +105,7 @@
 
 ### Recommended (Nice to Have)
 - [ ] Add E2E test suite
-- [ ] Create shell completion scripts
+- [x] Create shell completion scripts
 - [ ] Add VS Code extension
 - [ ] Implement configuration migration
 - [ ] Add Windows CI testing

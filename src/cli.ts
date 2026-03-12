@@ -11,6 +11,7 @@ import { statusCommand } from './commands/status';
 import { commitCommand } from './commands/commit';
 import { hooksCommand } from './commands/hooks';
 import { preCommitHook, prePushHook } from './commands/hook';
+import { completionCommand } from './commands/completion';
 import { ConfigManager } from './core/config';
 
 // Global error handlers
@@ -146,6 +147,36 @@ hooks
   .command('silent [mode]')
   .description('Enable/disable silent mode (on/off)')
   .action((mode) => hooksCommand('silent', { silent: mode as 'on' | 'off' }));
+
+// Completion management
+const completion = program
+  .command('completion')
+  .description('Generate shell completion scripts');
+
+completion
+  .command('bash')
+  .description('Output bash completion script')
+  .action(() => completionCommand('bash'));
+
+completion
+  .command('zsh')
+  .description('Output zsh completion script')
+  .action(() => completionCommand('zsh'));
+
+completion
+  .command('fish')
+  .description('Output fish completion script')
+  .action(() => completionCommand('fish'));
+
+completion
+  .command('install [shell]')
+  .description('Install completions for current shell (or specified shell)')
+  .action((shell) => completionCommand('install', shell));
+
+completion
+  .command('uninstall [shell]')
+  .description('Remove installed completions')
+  .action((shell) => completionCommand('uninstall', shell));
 
 // Internal hook handlers (called by git hooks)
 program
