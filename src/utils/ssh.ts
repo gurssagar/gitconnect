@@ -318,3 +318,66 @@ export const sshAgent = {
     }
   },
 };
+
+/**
+ * Encrypted SSH key storage utilities
+ */
+export const encryptedKeyStorage = {
+  /**
+   * Encrypt an SSH key with a passphrase
+   */
+  async encryptKey(keyPath: string, passphrase: string): Promise<boolean> {
+    try {
+      // Read the key
+      const keyContent = await fs.readFile(keyPath, 'utf-8');
+
+      // Check if already encrypted
+      if (keyContent.includes('ENCRYPTED')) {
+        return true; // Already encrypted
+      }
+
+      // Use ssh-keygen to add a passphrase
+      const tempPath = `${keyPath}.tmp`;
+      execSync(`ssh-keygen -p -P "" -N "${passphrase}" -f "${keyPath}"`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Decrypt an SSH key (remove passphrase)
+   */
+  async decryptKey(keyPath: string, passphrase: string): Promise<boolean> {
+    try {
+      execSync(`ssh-keygen -p -P "${passphrase}" -N "" -f "${keyPath}"`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Check if a key is encrypted
+   */
+  async isEncrypted(keyPath: string): Promise<boolean> {
+    try {
+      const content = await fs.readFile(keyPath, 'utf-8');
+      return content.includes('ENCRYPTED');
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * Change passphrase on an encrypted key
+   */
+  async changePassphrase(keyPath: string, oldPassphrase: string, newPassphrase: string): Promise<boolean> {
+    try {
+      execSync(`ssh-keygen -p -P "${oldPassphrase}" -N "${newPassphrase}" -f "${keyPath}"`, { stdio: 'pipe' });
+      return true;
+    } catch {
+      return false;
+    }
+  },
+};
