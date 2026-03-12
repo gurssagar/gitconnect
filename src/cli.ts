@@ -12,6 +12,7 @@ import { commitCommand } from './commands/commit';
 import { hooksCommand } from './commands/hooks';
 import { preCommitHook, prePushHook } from './commands/hook';
 import { completionCommand } from './commands/completion';
+import { setupCommand } from './commands/setup';
 import { ConfigManager } from './core/config';
 
 // Global error handlers
@@ -45,6 +46,12 @@ program
   .command('init')
   .description('Initialize GitConnect configuration')
   .action(initCommand);
+
+// Setup wizard
+program
+  .command('setup')
+  .description('Interactive setup wizard for first-time users')
+  .action(setupCommand);
 
 // Account management
 const account = program
