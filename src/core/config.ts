@@ -20,12 +20,26 @@ export class ConfigManager {
   private settingsFile: string;
   private sshDir: string;
 
+  // Cache
+  private accountsCache: Account[] | null = null;
+  private projectsCache: Record<string, ProjectConfig> | null = null;
+  private settingsCache: GitConnectConfig | null = null;
+
   constructor() {
     this.configDir = path.join(os.homedir(), '.gitconnect');
     this.accountsFile = path.join(this.configDir, 'accounts.json');
     this.projectsFile = path.join(this.configDir, 'projects.json');
     this.settingsFile = path.join(this.configDir, 'settings.json');
     this.sshDir = path.join(this.configDir, 'ssh');
+  }
+
+  /**
+   * Clear all caches (call after modifications)
+   */
+  clearCache(): void {
+    this.accountsCache = null;
+    this.projectsCache = null;
+    this.settingsCache = null;
   }
 
   async init(): Promise<void> {
@@ -141,33 +155,41 @@ export class ConfigManager {
   }
 
   async getAccounts(): Promise<Account[]> {
+    // Return cached value if available
+    if (this.accountsCache !== null) {
+      return this.accountsCache;
+    }
+
     const data = await fs.readFile(this.accountsFile, 'utf-8');
     const config = JSON.parse(data);
+    this.accountsCache = config.accounts;
     return config.accounts;
   }
 
   async saveAccount(account: Account): Promise<void> {
     const accounts = await this.getAccounts();
     const existingIndex = accounts.findIndex(a => a.id === account.id);
-    
+
     if (existingIndex >= 0) {
       accounts[existingIndex] = account;
     } else {
       accounts.push(account);
     }
 
-    await fs.writeFile(this.accountsFile, JSON.stringify({ accounts }, null, 2));
+    await fs.writeFile(this.accountsFile, JSON.stringify({ accounts, version: CURRENT_VERSION }, null, 2));
+    this.accountsCache = accounts; // Update cache
   }
 
   async removeAccount(accountId: string): Promise<boolean> {
     const accounts = await this.getAccounts();
     const filtered = accounts.filter(a => a.id !== accountId);
-    
+
     if (filtered.length === accounts.length) {
       return false;
     }
 
-    await fs.writeFile(this.accountsFile, JSON.stringify({ accounts: filtered }, null, 2));
+    await fs.writeFile(this.accountsFile, JSON.stringify({ accounts: filtered, version: CURRENT_VERSION }, null, 2));
+    this.accountsCache = filtered; // Update cache
     return true;
   }
 
@@ -177,8 +199,14 @@ export class ConfigManager {
   }
 
   async getProjects(): Promise<Record<string, ProjectConfig>> {
+    // Return cached value if available
+    if (this.projectsCache !== null) {
+      return this.projectsCache;
+    }
+
     const data = await fs.readFile(this.projectsFile, 'utf-8');
     const config = JSON.parse(data);
+    this.projectsCache = config.projects;
     return config.projects;
   }
 
@@ -190,16 +218,25 @@ export class ConfigManager {
   async setProjectConfig(projectPath: string, config: ProjectConfig): Promise<void> {
     const projects = await this.getProjects();
     projects[projectPath] = config;
-    await fs.writeFile(this.projectsFile, JSON.stringify({ projects }, null, 2));
+    await fs.writeFile(this.projectsFile, JSON.stringify({ projects, version: CURRENT_VERSION }, null, 2));
+    this.projectsCache = projects; // Update cache
   }
 
   async getSettings(): Promise<GitConnectConfig> {
+    // Return cached value if available
+    if (this.settingsCache !== null) {
+      return this.settingsCache;
+    }
+
     const data = await fs.readFile(this.settingsFile, 'utf-8');
-    return JSON.parse(data);
+    const settings = JSON.parse(data) as GitConnectConfig;
+    this.settingsCache = settings;
+    return settings;
   }
 
   async saveSettings(settings: GitConnectConfig): Promise<void> {
-    await fs.writeFile(this.settingsFile, JSON.stringify(settings, null, 2));
+    await fs.writeFile(this.settingsFile, JSON.stringify({ ...settings, version: CURRENT_VERSION }, null, 2));
+    this.settingsCache = settings; // Update cache
   }
 
   getSSHKeyPath(accountId: string): string {
