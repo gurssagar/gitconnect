@@ -1017,5 +1017,15 @@ GitConnect is now **Production Ready** ✅
 
 ---
 
+## 🔮 Future Roadmap (v54.0.0) - COMPLETE ✅
+
+### 1. Deck Plus
+- [x] 54 with jokers
+- [x] Wild commits
+- [x] Joker branching
+- [x] Wildcard merges
+
+---
+
 *Last Updated: 2026-03-13*
-*Project Version: 53.0.0*
+*Project Version: 54.0.0*
