@@ -26,20 +26,99 @@ export function activate(context: vscode.ExtensionContext) {
   statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   context.subscriptions.push(statusBarItem);
 
+  // Register TreeDataProvider
+  const gitconnectDataProvider = new GitConnectDataProvider();
+  vscode.window.registerTreeDataProvider('gitconnectAccounts', gitconnectDataProvider);
+
   // Register commands
   const switchAccountCmd = vscode.commands.registerCommand('gitconnect.switchAccount', switchAccount);
   const showStatusCmd = vscode.commands.registerCommand('gitconnect.showStatus', showStatus);
   const setProjectModeCmd = vscode.commands.registerCommand('gitconnect.setProjectMode', setProjectMode);
+  const refreshCmd = vscode.commands.registerCommand('gitconnect.refreshEntry', () => gitconnectDataProvider.refresh());
 
-  context.subscriptions.push(switchAccountCmd, showStatusCmd, setProjectModeCmd);
+  context.subscriptions.push(switchAccountCmd, showStatusCmd, setProjectModeCmd, refreshCmd);
 
   // Update status bar on startup
   updateStatusBar();
 
-  // Update status bar when workspace folders change
+  // Update status bar and sidebar when workspace folders change
   context.subscriptions.push(
-    vscode.workspace.onDidChangeWorkspaceFolders(() => updateStatusBar())
+    vscode.workspace.onDidChangeWorkspaceFolders(() => {
+      updateStatusBar();
+      gitconnectDataProvider.refresh();
+    })
   );
+}
+
+class GitConnectDataProvider implements vscode.TreeDataProvider<TreeItem> {
+  private _onDidChangeTreeData: vscode.EventEmitter<TreeItem | undefined | null | void> = new vscode.EventEmitter<TreeItem | undefined | null | void>();
+  readonly onDidChangeTreeData: vscode.Event<TreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
+
+  getTreeItem(element: TreeItem): vscode.TreeItem {
+    return element;
+  }
+
+  getChildren(element?: TreeItem): Thenable<TreeItem[]> {
+    if (element) {
+      if (element.contextValue === 'accountsGroup') {
+        const accounts = getAccounts();
+        return Promise.resolve(accounts.map(a => new TreeItem(a.username, a.email, vscode.TreeItemCollapsibleState.None, 'account', {
+          command: 'gitconnect.switchAccount',
+          title: 'Switch Account'
+        })));
+      }
+      return Promise.resolve([]);
+    }
+
+    const workspacePath = getCurrentWorkspacePath();
+    if (!workspacePath) {
+      return Promise.resolve([new TreeItem('No workspace open', '', vscode.TreeItemCollapsibleState.None)]);
+    }
+
+    const projectConfig = getProjectConfig(workspacePath);
+    const items: TreeItem[] = [];
+
+    // Current Status Section
+    if (projectConfig) {
+      const account = getAccountById(projectConfig.account);
+      items.push(new TreeItem('Current Account', account ? account.username : 'None', vscode.TreeItemCollapsibleState.None, 'status'));
+      items.push(new TreeItem('Project Mode', projectConfig.mode, vscode.TreeItemCollapsibleState.None, 'mode'));
+    } else {
+      items.push(new TreeItem('Status', 'Not configured', vscode.TreeItemCollapsibleState.None));
+    }
+
+    // Accounts Section
+    items.push(new TreeItem('Available Accounts', '', vscode.TreeItemCollapsibleState.Collapsed, 'accountsGroup'));
+
+    return Promise.resolve(items);
+  }
+}
+
+class TreeItem extends vscode.TreeItem {
+  constructor(
+    public readonly label: string,
+    private readonly subLabel: string,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+    public readonly contextValue?: string,
+    public readonly command?: vscode.Command
+  ) {
+    super(label, collapsibleState);
+    this.description = this.subLabel;
+    
+    if (contextValue === 'account') {
+      this.iconPath = new vscode.ThemeIcon('account');
+    } else if (contextValue === 'status') {
+      this.iconPath = new vscode.ThemeIcon('check');
+    } else if (contextValue === 'mode') {
+      this.iconPath = new vscode.ThemeIcon('settings');
+    } else if (contextValue === 'accountsGroup') {
+      this.iconPath = new vscode.ThemeIcon('list-unordered');
+    }
+  }
 }
 
 function getGitConnectPath(): string {
