@@ -70,7 +70,7 @@ async function setProjectAccount(
       name: 'projectMode',
       message: 'Select project mode:',
       choices: [
-        { name: 'Prompt - Ask before each push', value: 'prompt' },
+        { name: 'Prompt - Ask to confirm pushes and select account for commits', value: 'prompt' },
         { name: 'Auto - Use configured account automatically', value: 'auto' },
       ],
       default: 'prompt',
@@ -111,7 +111,7 @@ async function setProjectMode(
         name: 'mode',
         message: 'Select project mode:',
         choices: [
-          { name: 'Prompt - Ask before each push', value: 'prompt' },
+          { name: 'Prompt - Ask to confirm pushes and select account for commits', value: 'prompt' },
           { name: 'Auto - Use configured account automatically', value: 'auto' },
         ],
         default: projectConfig.mode,

@@ -133,21 +133,21 @@ export async function preCommitHook(): Promise<void> {
 export async function prePushHook(): Promise<void> {
   const config = new ConfigManager();
   const git = new GitManager();
-  
+
   // Check if initialized
   if (!(await config.isInitialized())) {
     process.exit(0);
   }
 
   const gitInfo = await git.getGitInfo();
-  
+
   if (!gitInfo.isGitRepo) {
     process.exit(0);
   }
 
   // Get project config
   const projectConfig = await config.getProjectConfig(gitInfo.projectPath);
-  
+
   // Check if hooks are disabled
   if (projectConfig?.mode === 'off') {
     process.exit(0);
@@ -155,29 +155,50 @@ export async function prePushHook(): Promise<void> {
 
   // Get accounts
   const accounts = await config.getAccounts();
-  
+
   if (accounts.length === 0) {
     console.log(chalk.yellow('No accounts configured. Run `gitconnect account add`'));
     process.exit(0);
   }
 
-  // Get current identity
-  const currentIdentity = await git.getIdentity();
-  
-  if (!currentIdentity) {
-    console.log(chalk.yellow('No git identity set'));
-    process.exit(0);
-  }
+  // In prompt mode, ask user to confirm the push
+  if (projectConfig?.mode === 'prompt') {
+    const currentIdentity = await git.getIdentity();
+    const matchingAccount = accounts.find(a => a.email === currentIdentity?.email);
 
-  // Find matching account
-  const matchingAccount = accounts.find(a => a.email === currentIdentity.email);
-  const silent = await isSilentMode();
+    try {
+      const { confirm } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'confirm',
+          message: matchingAccount
+            ? `Push as '${matchingAccount.username}' (${matchingAccount.email})?`
+            : `Push with current identity (${currentIdentity?.name} <${currentIdentity?.email}>)?`,
+          default: true,
+        },
+      ]);
 
-  if (!silent) {
-    if (matchingAccount) {
-      console.log(chalk.cyan(`GitConnect: Pushing as '${matchingAccount.username}'`));
-    } else {
-      console.log(chalk.yellow(`GitConnect: Current identity (${currentIdentity.email}) not in accounts`));
+      if (!confirm) {
+        console.log(chalk.yellow('Push cancelled'));
+        process.exit(1);
+      }
+    } catch (_error) {
+      // Non-interactive mode or cancelled
+      console.log(chalk.yellow('\nPush cancelled'));
+      process.exit(1);
+    }
+  } else {
+    // Auto mode - show which account will push
+    const currentIdentity = await git.getIdentity();
+    const matchingAccount = accounts.find(a => a.email === currentIdentity?.email);
+    const silent = await isSilentMode();
+
+    if (!silent) {
+      if (matchingAccount) {
+        console.log(chalk.cyan(`GitConnect: Pushing as '${matchingAccount.username}'`));
+      } else if (currentIdentity) {
+        console.log(chalk.yellow(`GitConnect: Current identity (${currentIdentity.email}) not in accounts`));
+      }
     }
   }
 

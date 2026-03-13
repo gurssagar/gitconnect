@@ -232,8 +232,20 @@ if command -v gitconnect >/dev/null 2>&1; then
 fi
 `;
 
+      const prePushHook = `#!/bin/sh
+# GitConnect pre-push hook
+if command -v gitconnect >/dev/null 2>&1; then
+  gitconnect hook-pre-push
+  if [ $? -ne 0 ]; then
+    echo "GitConnect: Push cancelled"
+    exit 1
+  fi
+fi
+`;
+
       await fs.writeFile(path.join(hooksDir, 'pre-commit'), preCommitHook, { mode: 0o755 });
-      console.log(chalk.green('✓ Git hooks installed'));
+      await fs.writeFile(path.join(hooksDir, 'pre-push'), prePushHook, { mode: 0o755 });
+      console.log(chalk.green('✓ Git hooks installed (pre-commit, pre-push)'));
     }
   } catch {
     // Not in a git repo
