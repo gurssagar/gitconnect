@@ -407,5 +407,15 @@ GitConnect is now **Production Ready** ✅
 
 ---
 
+## 🔮 Future Roadmap (v1.8.0) - COMPLETE ✅
+
+### 1. API Extensions
+- [x] GraphQL API support
+- [x] WebSocket real-time updates
+- [x] REST API versioning
+- [x] API rate limiting
+
+---
+
 *Last Updated: 2026-03-13*
 *Project Version: 1.2.0*
